@@ -929,26 +929,6 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	  $configysf2p25['P25 Network']['Id'] = preg_replace('/[^0-9]/', '', $_POST['ysf2p25Id']);
 	}
 
-	// Set Duplex
-	if (empty($_POST['trxMode']) != TRUE ) {
-	  if ($configmmdvm['Info']['RXFrequency'] === $configmmdvm['Info']['TXFrequency'] && $_POST['trxMode'] == "DUPLEX" ) {
-	    $configmmdvm['Info']['RXFrequency'] = $configmmdvm['Info']['TXFrequency'] - 1;
-	    }
-	  if ($configmmdvm['Info']['RXFrequency'] !== $configmmdvm['Info']['TXFrequency'] && $_POST['trxMode'] == "SIMPLEX" ) {
-	    $configmmdvm['Info']['RXFrequency'] = $configmmdvm['Info']['TXFrequency'];
-	    }
-	  if ($_POST['trxMode'] == "DUPLEX") {
-	    $configmmdvm['General']['Duplex'] = 1;
-	    $configmmdvm['DMR Network']['Slot1'] = '1';
-	    $configmmdvm['DMR Network']['Slot2'] = '1';
-	  }
-	  if ($_POST['trxMode'] == "SIMPLEX") {
-	    $configmmdvm['General']['Duplex'] = 0;
-	    $configmmdvm['DMR Network']['Slot1'] = '0';
-	    $configmmdvm['DMR Network']['Slot2'] = '1';
-	  }
-	}
-
 	// Set DMR / CCS7 ID
 	if (empty($_POST['dmrId']) != TRUE ) {
 	  $newPostDmrId = preg_replace('/[^0-9]/', '', $_POST['dmrId']);
@@ -1850,26 +1830,6 @@ if ($_SERVER["PHP_SELF"] == "/admin/configure.php") {
 	// Set MMDVMHost DMR Colour Code
 	if (empty($_POST['dmrColorCode']) != TRUE ) {
           $configmmdvm['DMR']['ColorCode'] = escapeshellcmd($_POST['dmrColorCode']);
-	}
-
-	// Set Node Lock Status
-	if (empty($_POST['nodeMode']) != TRUE ) {
-	  if (escapeshellcmd($_POST['nodeMode']) == 'prv' ) {
-            $configmmdvm['DMR']['SelfOnly'] = 1;
-            $configmmdvm['D-Star']['SelfOnly'] = 1;
-	    $configmmdvm['System Fusion']['SelfOnly'] = 1;
-	    $configmmdvm['P25']['SelfOnly'] = 1;
-	    $configmmdvm['NXDN']['SelfOnly'] = 1;
-            system('sudo sed -i "/restriction=/c\\restriction=1" /etc/dstarrepeater');
-          }
-	  if (escapeshellcmd($_POST['nodeMode']) == 'pub' ) {
-            $configmmdvm['DMR']['SelfOnly'] = 0;
-            $configmmdvm['D-Star']['SelfOnly'] = 0;
-	    $configmmdvm['System Fusion']['SelfOnly'] = 0;
-	    $configmmdvm['P25']['SelfOnly'] = 0;
-	    $configmmdvm['NXDN']['SelfOnly'] = 0;
-            system('sudo sed -i "/restriction=/c\\restriction=0" /etc/dstarrepeater');
-          }
 	}
 
 	// Set the Hostname
